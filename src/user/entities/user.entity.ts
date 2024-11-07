@@ -1,7 +1,9 @@
+import { Post } from 'src/post/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -28,6 +30,9 @@ export class User {
   })
   bio: string;
 
+  @Column('text', { nullable: true })
+  role: string; // Ej. "CEO & Founder"
+
   @Column('text', {
     nullable: true,
   })
@@ -47,4 +52,7 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 }

@@ -13,5 +13,9 @@ export class UpdateUserDto extends PartialType(SocialLoginDto) {
 
   @IsOptional()
   @IsString()
+  role?: string; // Ej. "CEO & Founder"
+
+  @IsOptional()
+  @IsString()
   location?: string;
 }
