@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class SocialLoginDto {
   @IsString()
@@ -15,16 +9,4 @@ export class SocialLoginDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @IsOptional()
-  @IsUrl()
-  profilePicture?: string;
-
-  @IsOptional()
-  @IsString()
-  bio?: string;
-
-  @IsOptional()
-  @IsString()
-  location?: string;
 }
