@@ -8,6 +8,7 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
   await app.listen(3000);
   logger.log(`App running at port ${process.env.BACK_PORT}`);
 }
