@@ -1,3 +1,5 @@
+import { Comment } from 'src/comment/entities/comment.entity';
+import { Like } from 'src/like/entities/like.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
@@ -5,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -18,17 +21,17 @@ export class Post {
   @Column('text')
   content: string;
 
-  @Column({ default: 0 })
-  likes: number;
-
-  @Column({ default: 0 })
-  commentsCount: number;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @Column('text', { array: true, nullable: true })
   imageUrls: string[];
+
+  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
+  comments: Comment[];
+
+  @OneToMany(() => Like, (like) => like.post, { cascade: true })
+  likes: Like[];
 
   @ManyToOne(() => User, (user) => user.posts)
   user: User;

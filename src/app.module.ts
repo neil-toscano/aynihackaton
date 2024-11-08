@@ -10,6 +10,11 @@ import { PostModule } from './post/post.module';
 import { Post } from './post/entities/post.entity';
 import { FilesModule } from './files/files.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { NotificationModule } from './notification/notification.module';
+import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module';
+import { Comment } from './comment/entities/comment.entity';
+import { Like } from './like/entities/like.entity';
 
 @Module({
   imports: [
@@ -25,7 +30,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Post],
+      entities: [User, Post, Comment, Like],
       synchronize: true,
     }),
     AuthModule,
@@ -33,6 +38,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     PostModule,
     FilesModule,
     CloudinaryModule,
+    NotificationModule,
+    CommentModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,14 +2,15 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { SocialLoginDto } from 'src/auth/dto/social-login.dto';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { LoginDto } from 'src/auth/dto/login.dto';
 
 @Injectable()
 export class UserService {
@@ -20,11 +21,11 @@ export class UserService {
   //   return 'This action adds a new user';
   // }
 
-  async create(signupInput: SocialLoginDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       const newUser = this.userRepository.create({
-        ...signupInput,
-        password: bcrypt.hashSync(':P', 10),
+        ...createUserDto,
+        password: bcrypt.hashSync(createUserDto.password, 10),
       });
       const user = await this.userRepository.save(newUser);
 
@@ -32,6 +33,27 @@ export class UserService {
     } catch (error) {
       this.handleDBErrors(error);
     }
+  }
+
+  async login(loginDto: LoginDto) {
+    const { password, email } = loginDto;
+    const user = await this.userRepository.findOne({
+      where: {
+        email: email,
+      },
+      select: {
+        email: true,
+        password: true,
+        id: true,
+      },
+    });
+    if (!user) {
+      throw new UnauthorizedException('email/password incorrect');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new UnauthorizedException('email/password incorrect');
+    return user;
   }
 
   async findOneByEmail(email: string): Promise<User> {

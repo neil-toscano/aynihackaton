@@ -22,7 +22,13 @@ export class PostService {
   }
 
   async findAll() {
-    return this.postRepository.find();
+    return this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.likes', 'like') // Relación con "likes"
+      .loadRelationCountAndMap('post.likeCount', 'post.likes') // Contar los "likes"
+      .leftJoinAndSelect('post.comments', 'comment') // Relación con "comments"
+      .loadRelationCountAndMap('post.commentCount', 'post.comments') // Contar los "comments"
+      .getMany();
   }
 
   findOne(id: number) {

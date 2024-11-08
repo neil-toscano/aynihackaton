@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { SocialLoginDto } from './dto/social-login.dto';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,10 @@ export class AuthService {
 
     let user = await this.userService.findOneByEmail(email);
     if (!user) {
-      user = await this.userService.create(socialLoginDto);
+      user = await this.userService.create({
+        ...socialLoginDto,
+        password: 'p',
+      });
     }
 
     const token = this.getJwtToken(user.id);
@@ -27,8 +30,16 @@ export class AuthService {
       user,
     };
   }
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+
+  async login(loginDto: LoginDto) {
+    const user = await this.userService.login(loginDto);
+    return {
+      ...user,
+      token: this.getJwtToken(user.id),
+    };
+  }
+  create(createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
   findAll() {
@@ -39,9 +50,9 @@ export class AuthService {
     return `This action returns a #${id} auth`;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+  // update(id: number, updateAuthDto: UpdateAuthDto) {
+  //   return `This action updates a #${id} auth`;
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
