@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Post } from 'src/post/entities/post.entity';
+import { Marketing } from 'src/marketing/entities/marketing.entity';
+import { Financiamiento } from 'src/financiamiento/entities/financiamiento.entity';
 
 @Entity()
 export class Comment {
@@ -24,4 +26,10 @@ export class Comment {
 
   @ManyToOne(() => Post, (post) => post.comments)
   post: Post;
+
+  @ManyToOne(() => Marketing, (marketing) => marketing.comments)
+  marketing: Marketing;
+
+  @ManyToOne(() => Financiamiento, (financiamiento) => financiamiento.comments)
+  financiamiento: Financiamiento;
 }

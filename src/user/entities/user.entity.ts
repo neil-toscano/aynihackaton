@@ -1,5 +1,6 @@
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
+import { Mercado } from 'src/mercado/entities/mercado.entity';
 import { Post } from 'src/post/entities/post.entity';
 import {
   Column,
@@ -63,4 +64,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Mercado, (mercado) => mercado.user)
+  mercado: Mercado[];
 }

@@ -24,6 +24,7 @@ export class PostService {
   async findAll() {
     return this.postRepository
       .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user') // Relación con el usuario que creó el post
       .leftJoinAndSelect('post.likes', 'like') // Relación con "likes"
       .loadRelationCountAndMap('post.likeCount', 'post.likes') // Contar los "likes"
       .leftJoinAndSelect('post.comments', 'comment') // Relación con "comments"

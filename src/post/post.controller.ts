@@ -25,7 +25,7 @@ export class PostController {
   }
 
   @Get()
-  @Auth()
+  // @Auth()
   findAll() {
     return this.postService.findAll();
   }

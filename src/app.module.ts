@@ -15,6 +15,14 @@ import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
 import { Comment } from './comment/entities/comment.entity';
 import { Like } from './like/entities/like.entity';
+import { MercadoModule } from './mercado/mercado.module';
+import { Mercado } from './mercado/entities/mercado.entity';
+import { FinanciamientoModule } from './financiamiento/financiamiento.module';
+import { Financiamiento } from './financiamiento/entities/financiamiento.entity';
+import { MarketingModule } from './marketing/marketing.module';
+import { Marketing } from './marketing/entities/marketing.entity';
+import { OrderHistoryModule } from './order_history/order_history.module';
+import { OrderHistory } from './order_history/entities/order_history.entity';
 
 @Module({
   imports: [
@@ -30,7 +38,16 @@ import { Like } from './like/entities/like.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Post, Comment, Like],
+      entities: [
+        User,
+        Post,
+        Comment,
+        Like,
+        Mercado,
+        Financiamiento,
+        Marketing,
+        OrderHistory,
+      ],
       synchronize: true,
     }),
     AuthModule,
@@ -41,6 +58,10 @@ import { Like } from './like/entities/like.entity';
     NotificationModule,
     CommentModule,
     LikeModule,
+    MercadoModule,
+    FinanciamientoModule,
+    MarketingModule,
+    OrderHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
