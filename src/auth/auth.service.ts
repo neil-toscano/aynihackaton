@@ -46,6 +46,7 @@ export class AuthService {
       token: this.getJwtToken(user.id),
     };
   }
+
   create(createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
