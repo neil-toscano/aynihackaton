@@ -29,6 +29,7 @@ export class PostService {
       .loadRelationCountAndMap('post.likeCount', 'post.likes') // Contar los "likes"
       .leftJoinAndSelect('post.comments', 'comment') // Relación con "comments"
       .loadRelationCountAndMap('post.commentCount', 'post.comments') // Contar los "comments"
+      .orderBy('post.createdAt', 'DESC')
       .getMany();
   }
 

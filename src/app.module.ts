@@ -23,6 +23,12 @@ import { MarketingModule } from './marketing/marketing.module';
 import { Marketing } from './marketing/entities/marketing.entity';
 import { OrderHistoryModule } from './order_history/order_history.module';
 import { OrderHistory } from './order_history/entities/order_history.entity';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/product.entity';
+import { OrderModule } from './order/order.module';
+import { Order } from './order/entities/order.entity';
+import { ChatModule } from './chat/chat.module';
+import { Chat } from './chat/entities/chat.entity';
 
 @Module({
   imports: [
@@ -47,6 +53,9 @@ import { OrderHistory } from './order_history/entities/order_history.entity';
         Financiamiento,
         Marketing,
         OrderHistory,
+        Product,
+        Order,
+        Chat,
       ],
       synchronize: true,
     }),
@@ -62,6 +71,9 @@ import { OrderHistory } from './order_history/entities/order_history.entity';
     FinanciamientoModule,
     MarketingModule,
     OrderHistoryModule,
+    ProductsModule,
+    OrderModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

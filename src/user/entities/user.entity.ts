@@ -1,3 +1,4 @@
+import { Chat } from 'src/chat/entities/chat.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Mercado } from 'src/mercado/entities/mercado.entity';
@@ -67,4 +68,10 @@ export class User {
 
   @OneToMany(() => Mercado, (mercado) => mercado.user)
   mercado: Mercado[];
+
+  @OneToMany(() => Chat, (message) => message.sender)
+  sentMessages: Chat[]; // Mensajes que el usuario ha enviado
+
+  @OneToMany(() => Chat, (message) => message.receiver)
+  receivedMessages: Chat[];
 }
