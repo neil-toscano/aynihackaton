@@ -26,6 +26,8 @@ export class User {
 
   @Column('text', {
     nullable: true,
+    default:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBD_ykDcG8TKeoMNSGsF88UYXjqjx3ZCeX-g&s', // Aquí se define la URL por defecto
   })
   profilePicture: string;
 
