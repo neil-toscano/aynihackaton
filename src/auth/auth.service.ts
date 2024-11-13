@@ -4,6 +4,7 @@ import { SocialLoginDto } from './dto/social-login.dto';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -33,6 +34,13 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.userService.login(loginDto);
+    return {
+      ...user,
+      token: this.getJwtToken(user.id),
+    };
+  }
+
+  async checkStatus(user: User) {
     return {
       ...user,
       token: this.getJwtToken(user.id),

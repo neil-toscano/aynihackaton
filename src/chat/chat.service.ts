@@ -29,6 +29,7 @@ export class ChatService {
   }
 
   async getChatMessages(getChatDto: GetChatDto): Promise<Chat[]> {
+    console.log(getChatDto, 'get');
     const { senderId, receiverId } = getChatDto;
 
     return this.chatRepository.find({
