@@ -8,7 +8,7 @@ import {
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { LoginDto } from 'src/auth/dto/login.dto';
@@ -80,9 +80,35 @@ export class UserService {
     throw new InternalServerErrorException('please check server logs');
   }
 
-  findAll() {
-    return this.userRepository.find({});
+  async findAll(id: string) {
+    const users = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoin(
+        'user.sentMessages', // Los mensajes enviados por el usuario
+        'message',
+        'message.receiverId = :id AND message.senderId = user.id AND message.isRead = false' // Mensajes no leídos enviados al receptor (id)
+      )
+      .addSelect('COUNT(message.id)', 'unreadMessageCount') // Cuenta los mensajes no leídos enviados al receptor
+      .addSelect('MAX(message.timestamp)', 'mostRecentMessage') // Obtiene el mensaje más reciente
+      .where('user.id != :id', { id }) // Excluye al usuario receptor
+      .groupBy('user.id') // Agrupa por usuario emisor
+      .orderBy('MAX(message.timestamp)', 'ASC') // Ordena por la fecha del mensaje más reciente
+      .getRawAndEntities();
+  
+    // Combina las entidades con los datos crudos
+    const result = users.entities.map((user, index) => {
+      const unreadMessages = parseInt(users.raw[index].unreadMessageCount, 10) || 0; // Cuenta los mensajes no leídos
+      return {
+        ...user,
+        unreadMessageCount: unreadMessages,
+      };
+    });
+  
+    console.log(result, 'user');
+    return result;
   }
+  
+  
 
   async findOne(id: string) {
     return await this.userRepository.findOneBy({

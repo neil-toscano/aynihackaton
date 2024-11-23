@@ -4,7 +4,6 @@ import { UpdateChatDto } from './dto/update-chat.dto';
 import { Chat } from './entities/chat.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
 import { GetChatDto } from './dto/get-chat.dto';
 
 @Injectable()
@@ -64,8 +63,18 @@ export class ChatService {
     return `This action returns a #${id} chat`;
   }
 
-  update(id: number, updateChatDto: UpdateChatDto) {
-    return `This action updates a #${id} chat`;
+  async update(id: string, updateChatDto: UpdateChatDto): Promise<Chat> {
+    const chat = await this.chatRepository.findOne({ where: { id } });
+
+    if (!chat) {
+      throw new Error('Chat not found');
+    }
+
+    if (updateChatDto.isRead !== undefined) {
+      chat.isRead = updateChatDto.isRead;
+    }
+
+    return await this.chatRepository.save(chat);
   }
 
   remove(id: number) {

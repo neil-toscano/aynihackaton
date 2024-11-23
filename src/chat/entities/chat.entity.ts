@@ -25,4 +25,7 @@ export class Chat {
     onDelete: 'CASCADE',
   })
   receiver: User; // Usuario que recibe el mensaje
+
+  @Column({ type: 'boolean', default: false })
+  isRead: boolean;
 }
