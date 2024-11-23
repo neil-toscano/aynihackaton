@@ -29,7 +29,7 @@
 ## Installation
 
 ```bash
-$ yarn install
+$ yarn install o npm install
 ```
 
 ## Running the app
